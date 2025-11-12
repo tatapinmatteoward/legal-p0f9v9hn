@@ -1,0 +1,211 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const pageTitle = "Our Practice Areas";
+const pageDescription = "Explore the diverse legal services offered by Justice Forward Law. From criminal defense to civil litigation, our expert attorneys provide authoritative guidance to advance justice in every case.";
+
+const practiceAreas = [
+  {
+    title: "Criminal Defense",
+    description: "Protecting your rights in the face of criminal charges is our priority. We provide vigorous defense strategies for clients accused of felonies, misdemeanors, and white-collar crimes.",
+    icon: "fas fa-gavel",
+    details: [
+      "DUI and Traffic Offenses",
+      "Felony and Misdemeanor Defense",
+      "White-Collar Crime Representation",
+      "Juvenile Defense"
+    ]
+  },
+  {
+    title: "Civil Litigation",
+    description: "Our experienced attorneys handle complex civil disputes with precision and strategic expertise. We advocate for our clients' interests in contract disputes, personal injury cases, and commercial litigation.",
+    icon: "fas fa-balance-scale",
+    details: [
+      "Contract Disputes",
+      "Personal Injury Claims",
+      "Commercial Litigation",
+      "Insurance Disputes"
+    ]
+  },
+  {
+    title: "Family Law",
+    description: "Navigating family legal matters with compassion and expertise. We provide comprehensive representation for divorce, child custody, adoption, and other family-related legal issues.",
+    icon: "fas fa-users",
+    details: [
+      "Divorce & Separation",
+      "Child Custody & Support",
+      "Adoption Services",
+      "Prenuptial Agreements"
+    ]
+  },
+  {
+    title: "Business Law",
+    description: "Protecting your business interests through comprehensive legal solutions. From formation to compliance, we provide strategic guidance to ensure your business thrives within the legal framework.",
+    icon: "fas fa-building",
+    details: [
+      "Business Formation",
+      "Corporate Compliance",
+      "Employment Law",
+      "Intellectual Property"
+    ]
+  },
+  {
+    title: "Estate Planning",
+    description: "Securing your legacy with thoughtful estate planning. We help clients create wills, trusts, and other estate documents to protect their assets and provide for their loved ones.",
+    icon: "fas fa-shield-alt",
+    details: [
+      "Wills & Trusts",
+      "Estate Administration",
+      "Probate Matters",
+      "Power of Attorney"
+    ]
+  },
+  {
+    title: "Immigration Law",
+    description: "Guiding clients through complex immigration processes with expertise and dedication. We provide representation for visas, green cards, citizenship applications, and deportation defense.",
+    icon: "fas fa-passport",
+    details: [
+      "Visa Applications",
+      "Green Card Processing",
+      "Citizenship Applications",
+      "Deportation Defense"
+    ]
+  }
+];
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <div class="relative overflow-hidden">
+    <!-- Hero Section -->
+    <div class="bg-gradient-to-r from-[#990000] to-[#660000] py-24">
+      <div class="container mx-auto px-4 text-center">
+        <h1 class="text-4xl md:text-6xl font-serif font-bold text-white mb-6">
+          {pageTitle}
+        </h1>
+        <p class="text-xl md:text-2xl text-[#f5f5f5] max-w-3xl mx-auto font-light">
+          Advancing Justice with Expert Legal Insight
+        </p>
+      </div>
+    </div>
+
+    <!-- Tagline -->
+    <div class="bg-[#333333] py-6">
+      <div class="container mx-auto px-4 text-center">
+        <p class="text-[#f5f5f5] italic font-serif text-lg">
+          "We combine minimalism in approach with maximal impact to deliver authoritative representation."
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <section class="container mx-auto px-4 py-16">
+    <div class="max-w-4xl mx-auto mb-16 text-center">
+      <h2 class="text-3xl md:text-4xl font-serif font-bold text-[#333333] mb-6">
+        Comprehensive Legal Expertise
+      </h2>
+      <p class="text-lg text-[#666666] font-light leading-relaxed">
+        At Justice Forward Law, we are dedicated to advancing justice through comprehensive legal expertise. Our firm specializes in a range of practice areas, drawing on years of experience to deliver authoritative representation tailored to your needs.
+      </p>
+    </div>
+
+    <!-- Practice Areas Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {practiceAreas.map((area, index) => (
+        <div 
+          class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+          key={index}
+        >
+          <div class="p-6">
+            <div class="flex items-center mb-4">
+              <div class="w-12 h-12 rounded-full bg-[#990000] flex items-center justify-center mr-4">
+                <i class={`${area.icon} text-white text-xl`}></i>
+              </div>
+              <h3 class="text-xl font-serif font-bold text-[#333333]">{area.title}</h3>
+            </div>
+            <p class="text-[#666666] mb-4 leading-relaxed">{area.description}</p>
+            <ul class="space-y-2">
+              {area.details.map((detail, i) => (
+                <li key={i} class="flex items-start">
+                  <i class="fas fa-chevron-right text-[#990000] mt-1 mr-2"></i>
+                  <span class="text-[#666666]">{detail}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="bg-gradient-to-r from-[#333333] to-[#1a1a1a] py-16">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-3xl md:text-4xl font-serif font-bold text-white mb-6">
+        Ready to Advance Your Justice?
+      </h2>
+      <p class="text-xl text-[#f5f5f5] max-w-2xl mx-auto mb-8">
+        Schedule a consultation with our experienced attorneys today. We provide personalized legal solutions with the attention to detail that matters most.
+      </p>
+      <button class="bg-[#990000] hover:bg-[#660000] text-white font-serif font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105">
+        Schedule Consultation
+      </button>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+  
+  .transition-all {
+    transition: all 0.3s ease;
+  }
+  
+  .hover\\:-translate-y-1:hover {
+    transform: translateY(-4px);
+  }
+  
+  .hover\\:scale-105:hover {
+    transform: scale(1.05);
+  }
+  
+  .shadow-xl {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+  
+  .font-serif {
+    font-family: 'Georgia', serif;
+  }
+  
+  .bg-gradient-to-r {
+    background: linear-gradient(90deg, var(--tw-gradient-stops));
+  }
+  
+  .bg-[#990000] {
+    background-color: #990000;
+  }
+  
+  .bg-[#333333] {
+    background-color: #333333;
+  }
+  
+  .bg-[#660000] {
+    background-color: #660000;
+  }
+  
+  .text-[#990000] {
+    color: #990000;
+  }
+  
+  .text-[#333333] {
+    color: #333333;
+  }
+  
+  .text-[#f5f5f5] {
+    color: #f5f5f5;
+  }
+  
+  .text-[#666666] {
+    color: #666666;
+  }
+</style>

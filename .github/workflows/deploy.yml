@@ -1,0 +1,198 @@
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+      PBN_SITE_ID: ${{ secrets.PBN_SITE_ID }}
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Build Astro site
+        id: build
+        run: npm run build
+      
+      - name: Send build success webhook
+        if: success() && env.WEBHOOK_URL != ''
+        run: |
+          curl -X POST "${{ env.WEBHOOK_URL }}" \
+            -H "Content-Type: application/json" \
+            -d @- <<EOF
+          {
+            "event": "build",
+            "status": "success",
+            "repo_name": "legal-p0f9v9hn",
+            "cloudflare_project_name": "legal-p0f9v9hn",
+            "pbn_site_id": "${{ env.PBN_SITE_ID }}",
+            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "workflow_run_id": "${{ github.run_id }}",
+            "commit_sha": "${{ github.sha }}",
+            "build_log": {
+              "message": "Build completed successfully",
+              "output": "static",
+              "directory": "dist/"
+            }
+          }
+          EOF
+      
+      - name: Send build failure webhook
+        if: failure() && env.WEBHOOK_URL != ''
+        run: |
+          curl -X POST "${{ env.WEBHOOK_URL }}" \
+            -H "Content-Type: application/json" \
+            -d @- <<EOF
+          {
+            "event": "build",
+            "status": "failure",
+            "repo_name": "legal-p0f9v9hn",
+            "cloudflare_project_name": "legal-p0f9v9hn",
+            "pbn_site_id": "${{ env.PBN_SITE_ID }}",
+            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "workflow_run_id": "${{ github.run_id }}",
+            "commit_sha": "${{ github.sha }}",
+            "build_log": {
+              "message": "Build failed",
+              "error": "Check workflow logs for details"
+            }
+          }
+          EOF
+      
+      - name: Deploy to Cloudflare Pages
+        id: deploy
+        run: |
+          echo "Deploying to Cloudflare Pages..."
+          echo "Project name: legal-p0f9v9hn"
+          
+          # Try to deploy directly first (project might already exist)
+          echo "Attempting deployment..."
+          DEPLOY_OUTPUT=$(npx wrangler pages deploy dist --project-name=legal-p0f9v9hn --branch=main 2>&1 || true)
+          echo "$DEPLOY_OUTPUT"
+          echo "$DEPLOY_OUTPUT" > /tmp/deploy_output.txt
+          
+          # Check if deployment failed because project doesn't exist
+          if echo "$DEPLOY_OUTPUT" | grep -qi "project not found\|does not exist\|project.*not found"; then
+            echo "Project doesn't exist, creating it..."
+            
+            # Create project (ignore errors if it already exists)
+            CREATE_OUTPUT=$(npx wrangler pages project create legal-p0f9v9hn --production-branch=main 2>&1 || true)
+            echo "$CREATE_OUTPUT"
+            
+            # Check if creation succeeded or project already exists
+            if echo "$CREATE_OUTPUT" | grep -qi "successfully created\|already exists"; then
+              echo "Project ready, attempting deployment again..."
+              
+              # Retry deployment
+              DEPLOY_OUTPUT=$(npx wrangler pages deploy dist --project-name=legal-p0f9v9hn --branch=main 2>&1)
+              echo "$DEPLOY_OUTPUT"
+              echo "$DEPLOY_OUTPUT" > /tmp/deploy_output.txt
+            else
+              echo "ERROR: Failed to create project"
+              echo "$CREATE_OUTPUT"
+              exit 1
+            fi
+          fi
+          
+          # Check if deployment was successful
+          if ! echo "$DEPLOY_OUTPUT" | grep -qi "success\|deployment complete\|✨"; then
+            echo "ERROR: Deployment failed"
+            echo "$DEPLOY_OUTPUT"
+            exit 1
+          fi
+          
+          # Extract deployment URL from output
+          # Base URL (2 dots):        https://project.pages.dev
+          # Deployment URL (3 dots): https://hash.project.pages.dev
+          
+          # Extract ALL .pages.dev URLs from output
+          ALL_URLS=$(echo "$DEPLOY_OUTPUT" | grep -oP 'https://[a-z0-9.-]+\.pages\.dev' | sort -u)
+          
+          # Find the deployment URL (has 3 dots, not the base URL)
+          DEPLOYMENT_URL=$(echo "$ALL_URLS" | grep -v "^https://legal-p0f9v9hn\.pages\.dev$" | grep -E 'https://[^/]+\.[^/]+\.[^/]+\.[^/]+' | tail -1)
+          
+          if [ -z "$DEPLOYMENT_URL" ]; then
+            echo "WARNING: Could not find deployment URL with 3 dots, trying any non-base URL..."
+            DEPLOYMENT_URL=$(echo "$ALL_URLS" | grep -v "^https://legal-p0f9v9hn\.pages\.dev$" | tail -1)
+          fi
+          
+          if [ -z "$DEPLOYMENT_URL" ]; then
+            echo "WARNING: No deployment URL found, using base URL as fallback"
+            DEPLOYMENT_URL="https://legal-p0f9v9hn.pages.dev"
+          fi
+          
+          echo "DEPLOYMENT_URL=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
+          echo "✅ Deployment successful: $DEPLOYMENT_URL"
+      
+      - name: Send Cloudflare deployment success webhook
+        if: success() && env.WEBHOOK_URL != ''
+        run: |
+          # Read deployment output
+          DEPLOY_LOG=$(cat /tmp/deploy_output.txt 2>/dev/null || echo "No deployment log available")
+          
+          curl -X POST "${{ env.WEBHOOK_URL }}" \
+            -H "Content-Type: application/json" \
+            -d @- <<EOF
+          {
+            "event": "cloudflare",
+            "status": "success",
+            "repo_name": "legal-p0f9v9hn",
+            "cloudflare_project_name": "legal-p0f9v9hn",
+            "pbn_site_id": "${{ env.PBN_SITE_ID }}",
+            "cloudflare_dev_site": "https://legal-p0f9v9hn.pages.dev",
+            "cloudflare_deployed_site": "${{ steps.deploy.outputs.DEPLOYMENT_URL }}",
+            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "workflow_run_id": "${{ github.run_id }}",
+            "commit_sha": "${{ github.sha }}",
+            "deployment_log": {
+              "message": "Deployment completed successfully",
+              "output": $(echo "$DEPLOY_LOG" | jq -Rs .)
+            }
+          }
+          EOF
+      
+      - name: Send Cloudflare deployment failure webhook
+        if: failure() && env.WEBHOOK_URL != ''
+        run: |
+          # Read deployment output if available
+          DEPLOY_LOG=$(cat /tmp/deploy_output.txt 2>/dev/null || echo "No deployment log available")
+          
+          curl -X POST "${{ env.WEBHOOK_URL }}" \
+            -H "Content-Type: application/json" \
+            -d @- <<EOF
+          {
+            "event": "cloudflare",
+            "status": "failure",
+            "repo_name": "legal-p0f9v9hn",
+            "cloudflare_project_name": "legal-p0f9v9hn",
+            "pbn_site_id": "${{ env.PBN_SITE_ID }}",
+            "cloudflare_dev_site": "https://legal-p0f9v9hn.pages.dev",
+            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "workflow_run_id": "${{ github.run_id }}",
+            "commit_sha": "${{ github.sha }}",
+            "deployment_log": {
+              "message": "Deployment failed",
+              "error": $(echo "$DEPLOY_LOG" | jq -Rs .)
+            }
+          }
+          EOF

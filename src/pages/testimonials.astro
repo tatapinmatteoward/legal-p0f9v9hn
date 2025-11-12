@@ -1,0 +1,144 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const pageTitle = "Client Testimonials - Justice Forward Law";
+const pageDescription = "Discover what our clients say about our dedicated legal services at Justice Forward Law. Read authentic testimonials highlighting our expertise in advancing justice.";
+const testimonials = [
+  {
+    id: 1,
+    name: "Johnathan R.",
+    role: "CEO, Tech Innovations Inc.",
+    content: "Justice Forward Law transformed a complex corporate dispute into a swift victory. Their authoritative guidance and minimalistic approach to strategy were game-changers. I couldn't recommend them more highly.",
+    rating: 5
+  },
+  {
+    id: 2,
+    name: "Maria L.",
+    role: "Individual Client",
+    content: "Facing a challenging family law matter, I found solace in the elegant expertise of the Justice Forward team. Their precise insights not only resolved my case but also provided emotional comfort during a difficult time.",
+    rating: 5
+  },
+  {
+    id: 3,
+    name: "David K.",
+    role: "Small Business Owner",
+    content: "The legal team at Justice Forward handled my commercial lease dispute with remarkable professionalism. Their strategic approach and attention to detail resulted in a favorable outcome that exceeded my expectations.",
+    rating: 5
+  },
+  {
+    id: 4,
+    name: "Sarah T.",
+    role: "Individual Client",
+    content: "When I needed estate planning advice, Justice Forward Law delivered excellence. Their clear communication and thorough preparation helped me secure my family's future with confidence.",
+    rating: 5
+  }
+];
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <div class="relative overflow-hidden">
+    <!-- Hero Section -->
+    <div class="bg-gradient-to-r from-[#990000] to-[#660000] py-24">
+      <div class="container mx-auto px-4 text-center">
+        <h1 class="text-4xl md:text-5xl font-serif font-bold text-white mb-6">Client Testimonials</h1>
+        <p class="text-xl text-[#f0f0f0] max-w-3xl mx-auto font-light">
+          Discover what our clients say about our dedicated legal services at Justice Forward Law. 
+          Read authentic testimonials highlighting our expertise in advancing justice.
+        </p>
+      </div>
+    </div>
+
+    <!-- Tagline -->
+    <div class="bg-[#333333] py-4">
+      <div class="container mx-auto px-4">
+        <p class="text-center text-[#f0f0f0] font-serif italic text-lg">
+          Advancing Justice with Expert Legal Insight
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Testimonials Section -->
+  <section class="container mx-auto px-4 py-16">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl font-serif font-bold text-[#333333] mb-4">What Our Clients Say</h2>
+      <div class="w-24 h-1 bg-[#990000] mx-auto"></div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {testimonials.map((testimonial) => (
+        <div class="bg-white rounded-lg shadow-lg p-8 transition-all duration-300 hover:shadow-xl border border-gray-100">
+          <div class="flex mb-6">
+            {[...Array(5)].map((_, i) => (
+              <i class="fas fa-star text-[#990000]"></i>
+            ))}
+          </div>
+          <p class="text-gray-700 font-serif text-lg italic mb-8 leading-relaxed">
+            "{testimonial.content}"
+          </p>
+          <div class="flex items-center">
+            <div class="ml-4">
+              <h4 class="font-serif font-bold text-[#333333]">{testimonial.name}</h4>
+              <p class="text-[#990000] font-serif">{testimonial.role}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Quote Section -->
+  <section class="py-16 bg-[#f8f8f8]">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto text-center">
+        <div class="text-5xl text-[#990000] mb-6">❝</div>
+        <p class="text-2xl font-serif text-[#333333] italic mb-8">
+          Our commitment to advancing justice is reflected in the experiences shared by those we've had the privilege to serve.
+        </p>
+        <p class="text-lg text-[#990000] font-serif">
+          At Justice Forward Law, we pride ourselves on delivering exceptional legal insight and unwavering support.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-20 bg-gradient-to-r from-[#990000] to-[#660000]">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-3xl md:text-4xl font-serif font-bold text-white mb-6">Ready to Advance Your Justice?</h2>
+      <p class="text-xl text-[#f0f0f0] max-w-2xl mx-auto mb-10">
+        Experience the difference that expert legal insight and authoritative representation can make.
+      </p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a href="/contact" class="bg-white text-[#990000] hover:bg-gray-100 font-serif font-bold py-3 px-8 rounded-lg transition duration-300">
+          Schedule a Consultation
+        </a>
+        <a href="/practice-areas" class="bg-transparent border-2 border-white text-white hover:bg-[#333333] font-serif font-bold py-3 px-8 rounded-lg transition duration-300">
+          Explore Our Practice Areas
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+  
+  .testimonial-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .testimonial-card {
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  }
+  
+  .testimonial-card:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+  
+  .custom-border {
+    border-top: 1px solid #990000;
+    border-bottom: 1px solid #990000;
+  }
+</style>

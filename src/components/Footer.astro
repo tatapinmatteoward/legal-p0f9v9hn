@@ -1,0 +1,22 @@
+---
+const currentYear = new Date().getFullYear();
+const socialLinks = [
+  { icon: 'fab fa-twitter', url: '#' },
+  { icon: 'fab fa-facebook', url: '#' },
+  { icon: 'fab fa-linkedin', url: '#' },
+  { icon: 'fab fa-instagram', url: '#' }
+];
+---
+
+<footer class="bg-[#0077b6] text-white py-8">
+  <div class="container mx-auto px-4 text-center">
+    <p>&copy; {currentYear} Legal Edge Insights. All rights reserved.</p>
+    <div class="flex justify-center gap-4 mt-4">
+      {socialLinks.map((link) => (
+        <a href={link.url} class="hover:text-[#ff6b6b] transition-colors duration-300">
+          <i class={link.icon}></i>
+        </a>
+      ))}
+    </div>
+  </div>
+</footer>

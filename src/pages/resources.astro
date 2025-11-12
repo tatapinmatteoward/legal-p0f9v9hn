@@ -1,0 +1,270 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const pageTitle = "Resources";
+const pageDescription = "Explore a curated collection of legal articles, guides, templates, and tools designed to provide sharp insights and practical support for legal professionals and enthusiasts.";
+
+const featuredArticles = [
+  {
+    title: "Navigating Data Privacy Laws in the Digital Age",
+    excerpt: "A comprehensive overview of GDPR and CCPA compliance strategies.",
+    category: "Privacy Law"
+  },
+  {
+    title: "Contract Essentials for Startups",
+    excerpt: "Key clauses to protect your business from inception.",
+    category: "Business Law"
+  },
+  {
+    title: "Recent Supreme Court Rulings on Intellectual Property",
+    excerpt: "Implications for creators and corporations alike.",
+    category: "Intellectual Property"
+  }
+];
+
+const practicalGuides = [
+  {
+    title: "Non-Disclosure Agreement Template",
+    category: "Contracts",
+    description: "Professional NDA template for business partnerships"
+  },
+  {
+    title: "Employment Policy Handbook",
+    category: "HR Law",
+    description: "Essential policies for modern workplace compliance"
+  },
+  {
+    title: "Litigation Strategy Framework",
+    category: "Litigation",
+    description: "Step-by-step approach to case preparation"
+  }
+];
+
+const tools = [
+  {
+    title: "Legal Research Database",
+    description: "Access to case law, statutes, and regulatory materials",
+    icon: "database"
+  },
+  {
+    title: "Compliance Checker",
+    description: "Automated assessment for regulatory adherence",
+    icon: "check-circle"
+  },
+  {
+    title: "Document Generator",
+    description: "Create standardized legal documents in minutes",
+    icon: "file-alt"
+  }
+];
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <div class="relative overflow-hidden">
+    {/* Hero Section */}
+    <div class="bg-gradient-to-br from-primary to-[#005a8a] py-24">
+      <div class="container mx-auto px-4 relative z-10">
+        <div class="max-w-3xl">
+          <span class="inline-block bg-white/10 backdrop-blur-sm text-white px-4 py-1 rounded-full text-sm mb-4">
+            <i class="fas fa-lightbulb mr-2"></i> Sharp Legal Insights
+          </span>
+          <h1 class="text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
+            Resources for Legal Professionals
+          </h1>
+          <p class="text-xl text-white/90 mb-8 max-w-2xl">
+            Explore a curated collection of articles, guides, templates, and tools designed to provide sharp insights and practical support.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <button class="bg-white text-primary hover:bg-gray-100 font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:-translate-y-1 shadow-lg">
+              Browse Articles
+            </button>
+            <button class="bg-transparent border-2 border-white text-white hover:bg-white/10 font-semibold py-3 px-6 rounded-lg transition-all duration-300">
+              Download Templates
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxjaXJjbGUgY3g9IjIwIiBjeT0iMjAiIHI9IjEuNSIgZmlsbD0iI2ZmZiIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==')]"></div>
+      </div>
+    </div>
+
+    {/* Featured Articles Section */}
+    <section class="py-20 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Featured Articles</h2>
+          <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+            Stay ahead with in-depth analyses on emerging legal trends
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {featuredArticles.map((article, index) => (
+            <div 
+              key={index} 
+              class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-2"
+            >
+              <div class="p-6">
+                <div class="flex items-center mb-4">
+                  <span class="bg-primary/10 text-primary text-xs font-semibold px-3 py-1 rounded-full">
+                    {article.category}
+                  </span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">{article.title}</h3>
+                <p class="text-gray-600 mb-4">{article.excerpt}</p>
+                <a 
+                  href="#" 
+                  class="inline-flex items-center text-primary font-medium group"
+                >
+                  Read more
+                  <i class="fas fa-arrow-right ml-2 group-hover:ml-3 transition-all duration-300"></i>
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div class="text-center mt-12">
+          <a 
+            href="/articles" 
+            class="inline-flex items-center bg-primary hover:bg-[#005a8a] text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300"
+          >
+            <i class="fas fa-book-open mr-2"></i> View All Articles
+          </a>
+        </div>
+      </div>
+    </section>
+
+    {/* Practical Guides Section */}
+    <section class="py-20 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Practical Guides & Templates</h2>
+          <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+            Downloadable resources to streamline your practice
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {practicalGuides.map((guide, index) => (
+            <div 
+              key={index} 
+              class="border border-gray-200 rounded-xl p-6 hover:border-primary/50 transition-all duration-300 group"
+            >
+              <div class="flex justify-between items-start mb-4">
+                <div>
+                  <span class="bg-gray-100 text-gray-800 text-xs font-semibold px-3 py-1 rounded-full">
+                    {guide.category}
+                  </span>
+                  <h3 class="text-xl font-bold text-gray-900 mt-3">{guide.title}</h3>
+                </div>
+                <i class="fas fa-file-download text-primary text-xl group-hover:text-accent transition-colors duration-300"></i>
+              </div>
+              <p class="text-gray-600 mb-6">{guide.description}</p>
+              <button class="w-full bg-gray-50 hover:bg-primary/10 text-primary font-medium py-2 px-4 rounded-lg transition-colors duration-300">
+                Download Template
+              </button>
+            </div>
+          ))}
+        </div>
+
+        <div class="text-center mt-12">
+          <a 
+            href="/templates" 
+            class="inline-flex items-center bg-accent hover:bg-[#e55a5a] text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300"
+          >
+            <i class="fas fa-download mr-2"></i> Browse All Templates
+          </a>
+        </div>
+      </div>
+    </section>
+
+    {/* Tools Section */}
+    <section class="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Legal Tools & Resources</h2>
+          <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+            Efficient solutions for modern legal practice
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {tools.map((tool, index) => (
+            <div 
+              key={index} 
+              class="bg-white rounded-xl shadow-md p-8 text-center hover:shadow-lg transition-shadow duration-300"
+            >
+              <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class={`fas fa-${tool.icon} text-2xl text-primary`}></i>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 mb-3">{tool.title}</h3>
+              <p class="text-gray-600 mb-6">{tool.description}</p>
+              <button class="text-primary hover:text-accent font-medium flex items-center justify-center mx-auto">
+                Access Tool
+                <i class="fas fa-arrow-right ml-2"></i>
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* CTA Section */}
+    <section class="py-20 bg-gradient-to-r from-primary to-[#005a8a]">
+      <div class="container mx-auto px-4 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Never Miss an Update</h2>
+        <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+          Join our newsletter for weekly insights and new resource releases
+        </p>
+        <div class="max-w-md mx-auto flex">
+          <input 
+            type="email" 
+            placeholder="Your email address" 
+            class="flex-grow px-6 py-4 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-white/30"
+          />
+          <button class="bg-accent hover:bg-[#ff5252] text-white font-semibold py-4 px-8 rounded-r-lg transition-colors duration-300">
+            Subscribe
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  /* Custom animations */
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  /* Custom hover effect */
+  .hover\:shadow-xl:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+
+  /* Scrollbar styling */
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: #f1f5f9;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #0077b6;
+    border-radius: 4px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: #005a8a;
+  }
+</style>
