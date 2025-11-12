@@ -6,7 +6,7 @@ const navItems = [
 ];
 ---
 
-<nav class="bg-primary text-white shadow-lg">
+<nav class="bg-primary text-white shadow-lg relative z-50">
   <div class="container mx-auto px-4 py-4">
     <div class="flex justify-between items-center">
       <a href="/" class="text-2xl font-bold text-accent">Legal Edge Insights</a>
@@ -16,7 +16,7 @@ const navItems = [
         {navItems.map((item) => (
           <a 
             href={item.href} 
-            class="text-neutral hover:text-accent transition-colors duration-200"
+            class="text-white hover:text-accent transition-colors duration-200"
           >
             {item.label}
           </a>
@@ -24,30 +24,66 @@ const navItems = [
       </div>
       
       <!-- Mobile Menu Button -->
-      <button id="mobile-menu-button" class="md:hidden text-[#0077b6]">
+      <button 
+        id="mobile-menu-button" 
+        class="md:hidden text-white p-2 hover:text-accent transition-colors duration-200"
+        aria-label="Toggle menu"
+      >
         <i class="fas fa-bars text-2xl"></i>
       </button>
     </div>
-    
-    <!-- Mobile Menu (hidden by default) -->
-    <div id="mobile-menu" class="hidden md:hidden mt-4 flex flex-col gap-4 pb-4">
-      {navItems.map((item) => (
-        <a 
-          href={item.href} 
-          class="text-gray-700 hover:text-[#0077b6] transition-colors duration-200 py-2"
-        >
-          {item.label}
-        </a>
-      ))}
+  </div>
+
+  <!-- Mobile Menu (hidden by default) -->
+  <div 
+    id="mobile-menu" 
+    class="fixed inset-0 bg-primary bg-opacity-95 md:hidden hidden transition-opacity duration-300 ease-in-out"
+  >
+    <div class="container mx-auto px-4 pt-20">
+      <button 
+        id="close-menu-button"
+        class="absolute top-4 right-4 text-white p-2 hover:text-accent transition-colors duration-200"
+        aria-label="Close menu"
+      >
+        <i class="fas fa-times text-2xl"></i>
+      </button>
+      
+      <div class="flex flex-col items-center gap-8 text-xl">
+        {navItems.map((item) => (
+          <a 
+            href={item.href} 
+            class="text-white hover:text-accent transition-colors duration-200 py-2"
+          >
+            {item.label}
+          </a>
+        ))}
+      </div>
     </div>
   </div>
 </nav>
 
 <script>
   const button = document.getElementById('mobile-menu-button');
+  const closeButton = document.getElementById('close-menu-button');
   const menu = document.getElementById('mobile-menu');
-  button?.addEventListener('click', () => {
-    menu?.classList.toggle('hidden');
+  const body = document.body;
+
+  function toggleMenu(show: boolean) {
+    if (show) {
+      menu?.classList.remove('hidden');
+      body.style.overflow = 'hidden';
+    } else {
+      menu?.classList.add('hidden');
+      body.style.overflow = '';
+    }
+  }
+
+  button?.addEventListener('click', () => toggleMenu(true));
+  closeButton?.addEventListener('click', () => toggleMenu(false));
+  
+  // Close menu when clicking on a link
+  menu?.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => toggleMenu(false));
   });
 </script>
 
